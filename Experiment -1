@@ -1,0 +1,16 @@
+1.create a table st_info with attributes prn, name, m1,m2,m3
+=>>>create table st_info (prn int, name varchar2(20),m1 number,m2 number,m3 number);
+#to see table: select * from tab;
+#to see table: select * from tab;
+select * from st_info #this will display content in the table
+desc st_info; # this will display the structure of the table
+now;
+insert into st_info(PRN,NAME,M1,M2,M3)values(220,'Aryan',50,20,10);(type this 10 times and change the values)
+
+2.insert at least 10 rows in the table
+3.add attribute total and percentage to the table
+alter table st_info add total number;
+alter table st_info add perc number;
+4.calculate total and percentage
+update st_info set total=m1+m2+m3;
+update st_info set perc=total/3;
