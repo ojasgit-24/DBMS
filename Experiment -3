@@ -1,0 +1,98 @@
+JOINS
+FOR THIS first
+select * from instructor where dept_id=(select dept_id from department where name ='Computer Science');
+insert into instructor values(8,'xyz',1,'N',55000);# here we inserted 1 row.
+THEN USING JOIN
+select i.instructor_id,i.Name,i.salary,d.name from instructor i join department d on i.dept_id=d.dept_id where d.name='Computer Science';
+a)Find the average salary of instructors in the Computer Science department.
+==>select d.name, avg(salary) as AVG_SAL from instructor i join department d on i.dept_id=d.dept_id where d.name='Computer Science' group by d.name; 
+b)find the average salary in each department.
+==>select d.name, avg(salary) as AVG_SAL from instructor i join department d on i.dept_id=d.dept_id where d.name='Mathematics' group by d.name;
+select d.name, avg(salary) as AVG_SAL from instructor i join department d on i.dept_id=d.dept_id where d.name='Biology' group by d.name;
+in one command the avg;
+select d.name, avg(i.salary) as AVG_SAL from department d join instructor i on d.dept_id=i.dept_id group by d.name;
+c)What is the total salary of all teachers earning more than 30K?
+select sum(salary)as total_sal from instructor where salary > 30000;
+d)List the number of students enrolled in each course
+CREATE TABLE STUDENT (
+    student_id NUMBER(38) PRIMARY KEY,
+    name       VARCHAR2(50) NOT NULL,
+    tot_cred   NUMBER(3)
+);
+
+INSERT INTO STUDENT VALUES (101, 'Arjun', 20);
+INSERT INTO STUDENT VALUES (102, 'Meera', 22);
+INSERT INTO STUDENT VALUES (106, 'Rahul', 18);
+INSERT INTO STUDENT VALUES (107, 'Sneha', 19);
+INSERT INTO STUDENT VALUES (108, 'Kiran', 21);
+
+CREATE TABLE ENROLLMENT (
+    enrollment_id INT PRIMARY KEY,
+    student_id INT NOT NULL,
+    section_id INT NOT NULL,
+    enrollment_date DATE,
+    status VARCHAR(20) DEFAULT 'ENROLLED',
+    FOREIGN KEY (student_id) REFERENCES STUDENT(student_id),
+    FOREIGN KEY (section_id) REFERENCES SECTION(section_id)
+);
+
+INSERT INTO ENROLLMENT VALUES (1, 101, 1, DATE '2024-07-01', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (2, 102, 1, DATE '2024-07-01', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (3, 101, 2, DATE '2024-07-02', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (4, 102, 2, DATE '2024-07-02', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (5, 106, 3, DATE '2024-07-03', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (6, 107, 4, DATE '2024-07-03', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (7, 108, 5, DATE '2024-07-04', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (8, 101, 6, DATE '2024-07-04', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (9, 102, 7, DATE '2024-07-05', 'ENROLLED');
+INSERT INTO ENROLLMENT VALUES (10,106, 8, DATE '2024-07-05', 'ENROLLED');
+desc course;
+desc enrollment;
+SELECT C.course_id,C.title, COUNT(E.student_id) AS enrolled_students FROM COURSE C LEFT JOIN  SECTION S ON C.course_id=S.course_id LEFT JOIN ENROLLMENT E ON S.section_id=E.section_id GROUP BY C.course_id,C.title ORDER BY C.course_id;
+==>if i have to find any course and i did any mistake in writing the name of dept for example Computer Science to computer science i will get the error as no rows selected but if i have the huge amount of data or rows so i can find it by 
+e)select * from department where name ='Computer Science';
+select * from department where lower(name) like 'computer Science';
+select * from department where lower(name) like '%science%';
+select * from department where lower(name) like '%sci%';
+select * from department where name= 'Computer Science';
+g)	Display the length of the name of all the students.
+==>select length(name)from student;
+to calculate total number of instructors
+==>select count(name) from instructor;
+i)Add hiredate column in the instructor table. Insert 4 rows in the table. Display the names of instructor who are working for the past 5 years.
+==>alter table instructor add hiredate date;
+desc instructor;
+update instructor set hiredate = date '2021-01-30' where instructor_id=1;
+yyyy/mm/dd(usa format) 
+update instructor set hiredate = date '2022-03-29' where instructor_id=2;
+update instructor set hiredate = date '2021-10-28' where instructor_id=3;
+update instructor set hiredate = date '2021-11-27' where instructor_id=4;
+update instructor set hiredate = date '2021-08-26' where instructor_id=5;
+update instructor set hiredate = date '2021-07-25' where instructor_id=6;
+update instructor set hiredate = date '2021-06-24' where instructor_id=7;
+update instructor set hiredate = date '2021-05-23' where instructor_id=8;
+past 5 years
+==>select * from instructor where hiredate < add_months(sysdate,-60); #60 because 60 months = 5 years
+j)Display the list of instructor who have joined after 1 Jan 2021 or before 30 th  june 2022
+==>select * from instructor where hiredate > date '2021-01-01' and hiredate < date '2022-06-30'; 
+k)Display name of those instructors who are going to retire 01-Jan-24. If the maximum job is period is 3 years.
+==>select * from instructor where hiredate < date '2024-01-01' and hiredate < add_months(sysdate, -62);
+l)Display those instructors whose salary contains at least 4 digits and salary above 75000.
+==>select name, salary from instructor where salary>=75000 and length(salary) >=4;
+select name, salary from instructor where salary>=75000 or length(salary) >=4;
+m)Print a list of instructors displaying ‘Less Salary’ if less than 60000 if exactly 60000 display as ‘Exact Salary’ and if greater than 60000 display ‘More Salary’.
+==>select name, salary,
+       case
+           when salary < 60000 then 'Less Salary'
+           when salary = 60000 then 'Exact Salary'
+           when salary > 60000 then 'More Salary'
+       end as salary_status
+from instructor;
+n)Display names of all the instructors concatenated with their department names.
+==>select i.name || ' => ' || d.name from instructor i join department d on i.dept_id=d.dept_id;
+o)Retrieve distinct number of instructors.
+==>select * from department;
+select d.name,count(i.name) from instructor i join department d on i.dept_id=d.dept_id group by d.name;
+p)Find the names of all instructors whose salary is greater than at least one instructor in the Biology department.
+==>update instructor set salary=70000 where name = 'Frank Miller';
+select i.name ,i.salary from instructor i where i.salary>=(select i2.salary from instructor i2 join department d on i2.dept_id=d.dept_id where d.name = 'Biology');
