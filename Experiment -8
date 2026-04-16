@@ -1,0 +1,55 @@
+exp 8
+If there are marks of 4 subjects 
+1)check for pass condition each subject must be of 50 marks
+2)check for a)Distinction if total abouve 75%
+b)find division if total above 60%
+c)second division if toal above 50%
+case 1    case 2
+cs=75     CS=75
+M1=45	  M1=79	
+M2=52	  M2=100	
+M3=75	  M3=95
+solution:
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+cs NUMBER;
+m1 NUMBER;
+m2 NUMBER;
+m3 NUMBER;
+total NUMBER;
+per NUMBER;
+result VARCHAR2(10);
+division VARCHAR2(20);
+BEGIN
+cs := &cs;
+m1 := &m1;
+m2 := &m2;
+m3 := &m3;
+total := cs + m1 + m2 + m3;
+per := (total/400)*100;
+
+IF cs < 50 OR m1 < 50 OR m2 < 50 OR m3 < 50 THEN
+    result := 'FAIL';
+    division := 'NONE';
+ELSE
+    result := 'PASS';
+
+    IF per > 75 THEN
+        division := 'DISTINCTION';
+    ELSIF per > 60 THEN
+        division := 'FIRST DIVISION';
+    ELSIF per > 50 THEN
+        division := 'SECOND DIVISION';
+    ELSE
+        division := 'PASS';
+    END IF;
+END IF;
+
+DBMS_OUTPUT.PUT_LINE('Total = ' || total);
+DBMS_OUTPUT.PUT_LINE('Percentage = ' || per);
+DBMS_OUTPUT.PUT_LINE('Result = ' || result);
+DBMS_OUTPUT.PUT_LINE('Division = ' || division);
+END;
+/
