@@ -1,0 +1,77 @@
+EXP 10
+Exceptions
+There are 2 types of exceptions
+1)system defied 2)user defined
+in system defined exceptions there is no_data found or max_rows found
+in user defined exceptions out of range
+system defined
+create or replace procedure find_emp_id_1 (
+    v_fname IN emp6.first_name%type,
+    v_lname IN emp6.last_name%type
+)
+as
+    v_emp_id emp6.emp_no%type;
+begin
+    select emp_no into v_emp_id
+    from emp6
+    where first_name = v_fname
+    and last_name = v_lname;
+
+    DBMS_OUTPUT.PUT_LINE('Employee Id is: ' || v_emp_id);
+
+EXCEPTION
+    when NO_DATA_FOUND then
+        DBMS_OUTPUT.PUT_LINE('No employee found with given name.');
+END;
+/
+#for output
+begin
+    find_emp_id('John', 'Smith');
+    end;
+    /
+-----------------------------------------------------------------------------------------------------------------------
+user defined exceptions
+CREATE OR REPLACE PROCEDURE result_proc
+AS
+    v_m1 NUMBER;
+    v_m2 NUMBER;
+    v_m3 NUMBER;
+    v_total NUMBER;
+    v_perc NUMBER;
+    v_result VARCHAR2(10);
+
+    invalid_marks EXCEPTION;
+
+BEGIN
+    v_m1 := &m1;
+    v_m2 := &m2;
+    v_m3 := &m3;
+
+    IF v_m1 < 0 OR v_m1 > 100 OR
+       v_m2 < 0 OR v_m2 > 100 OR
+       v_m3 < 0 OR v_m3 > 100 THEN
+        RAISE invalid_marks;
+    END IF;
+
+    v_total := v_m1 + v_m2 + v_m3;
+    v_perc := v_total / 3;
+
+    IF v_perc >= 40 THEN
+        v_result := 'PASS';
+    ELSE
+        v_result := 'FAIL';
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Total marks: ' || v_total);
+    DBMS_OUTPUT.PUT_LINE('Percentage: ' || v_perc);
+    DBMS_OUTPUT.PUT_LINE('Result: ' || v_result);
+
+EXCEPTION
+    WHEN invalid_marks THEN
+        DBMS_OUTPUT.PUT_LINE('Enter valid marks (0-100)');
+END;
+/
+#for output
+SET SERVEROUTPUT ON;
+EXEC result_proc;
+--------------------------------------------------------------------------------------------------------------
