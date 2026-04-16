@@ -1,0 +1,19 @@
+EXPERIMENT17
+create table emp2_Aud as
+select * from emp2 where 1=2 #no record will be copied where 1=2 is called as sql injection
+alter table emp2_Aud
+add(
+    new_sal NUMBER(10,2),
+    date_mod DATE
+);
+----------------------------------------
+create or replace trigger sal_aud
+after update of salary on emp2 
+for each row
+begin
+insert into emp2_Aud(empno,name,category,salary,new_sal,date_mod)values(:old.empno,:old.name,:old.category,:old.salary,:new.salary,sysdate);
+end;
+/
+for result
+update emp2 set salary=25000 where empno=101;
+--------------------------------------------------------------------------------------------------------------------------------
