@@ -1,0 +1,32 @@
+
+EXPERIMENT16
+------------------------------------------
+recall prac15 where conditions
+1)category 1->10000
+2)category 2->20,000
+3)category 3->30000
+4)category 4-> 40000
+5)upper limit=?
+6)lower limit=?
+----------------------------------------------------------
+create or replace trigger max_min_sal for insert or update on emp2
+COMPOUND TRIGGER
+v_max emp2.salary%type;
+v_min emp2.salary%type;
+v_upper emp2.salary%type;
+v_lower emp2.salary%type;
+BEFORE STATEMENT IS
+begin
+select max(salary) into v_max from emp2;
+select min(salary) into v_max from emp2;
+v_upper:=v_min*10;  
+v_lower:=v_max/10;
+END BEFORE STATEMENT;
+BEFORE EACH ROW IS
+BEGIN
+if :new.salary<v_lower or :new.salary>v_upper then
+RAISE_APPLICATION_ERROR(-20001,'VALUE NOT IN RANGE');
+end if;
+END BEFORE EACH ROW;
+end;
+/ 
