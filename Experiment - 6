@@ -1,0 +1,121 @@
+prac 6
+#hellow world pogramme using procedures
+Create procedure Hello_world
+As
+Begin
+DBMS_OUTPUT.PUT_line('Hello World');
+End;
+/
+#now to execute above program 
+EXEC Hello_world;
+execute Hello_world;
+
+#add 'welcome to sit' after 'Hello world'
+create or replace procedure Hello_world
+As
+Begin
+DBMS_OUTPUT.PUT_line('Hello World,Welcome to SIT');
+End;
+/
+
+#additio of two numbers
+CREATE OR REPLACE PROCEDURE addition
+AS
+    num1 NUMBER := 5;
+    num2 NUMBER := 10;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('RESULT: ' || (num1 + num2));
+END;
+/
+Swapping Two Numbers Without Using a Third Variable Procedure Creation
+CREATE OR REPLACE PROCEDURE SwapNumbers (
+    num1 IN OUT NUMBER,
+    num2 IN OUT NUMBER
+) AS
+BEGIN
+    num1 := num1 + num2;
+    num2 := num1 - num2;
+    num1 := num1 - num2;
+END;
+/
+VARIABLE X NUMBER;
+VARIABLE Y NUMBER;
+EXEC :X:=10;
+EXEC :Y:=20;
+EXEC SwapNumbers(:x,:y);
+PRINT x;
+PRINT y;
+
+#addition of number
+CREATE OR REPLACE PROCEDURE add1
+AS
+    a NUMBER;
+    b NUMBER;
+BEGIN
+    a := 5;
+    b := 10;
+   
+END;
+/
+
+#with user input
+create or replace procedure add2
+(a in number,
+b in number)
+as 
+begin
+ DBMS_OUTPUT.PUT_LINE('Result: ' || (a + b));
+
+END;
+/
+exec add2(5,10)
+
+#
+create or replace procedure add3
+(a in number,
+b in number, c out number)
+as 
+begin
+c:=a+b;
+DBMS_OUTPUT.PUT_LINE('Result: ' || (c));
+end;
+/
+variable c1 number;
+exec add3(5,10,:c1)
+
+#swap 2 numbers without using 3rd variable
+CREATE OR REPLACE PROCEDURE swap4
+(
+    a IN OUT NUMBER,
+    b IN OUT NUMBER
+)
+AS
+BEGIN
+a := a + b;
+b := a - b;
+a := a - b;
+
+DBMS_OUTPUT.PUT_LINE('After Swapping:');
+DBMS_OUTPUT.PUT_LINE('a = ' || a);
+DBMS_OUTPUT.PUT_LINE('b = ' || b);
+END;
+/
+#conditional statements
+#find the largest among 3 variables
+CREATE OR REPLACE PROCEDURE largest3
+(
+    a NUMBER,
+    b NUMBER,
+    c NUMBER
+)
+AS
+BEGIN
+IF a >= b AND a >= c THEN
+DBMS_OUTPUT.PUT_LINE('Largest number is: ' || a);
+ELSIF b >= a AND b >= c THEN
+DBMS_OUTPUT.PUT_LINE('Largest number is: ' || b);
+ELSE
+DBMS_OUTPUT.PUT_LINE('Largest number is: ' || c);
+END IF;
+END;
+/
