@@ -1,0 +1,54 @@
+EXPERIMENT13
+---------------
+triggers
+--------------
+Syntax
+create or replace trigger tri_name
+before|| after for
+insert||update||delete on table_name
+begin
+statements
+end;
+/
+------------------------------
+use st_info table
+-------------------------------
+create or replace trigger tri_upd
+after update on st_info
+begin
+DBMS_OUTPUT.PUT_LINE('This is statement level trigger fired');
+end;
+/
+#for output
+update st_info set sub1=sub1-10;
+------------------------------------------------------------------------
+create or replace trigger tri_upd
+after update on st_info for each row
+begin
+DBMS_OUTPUT.PUT_LINE('This is row level trigger fired');
+end;
+/
+#for output
+update st_info set sub1=sub1+10;
+update st_info set sub1=sub1-10 where sub1>80;  #(update will be for 4 rows)
+-------------------------------------------------------------------------------
+write the trigger for insertion of rows
+create or replace trigger tri_ins
+after insert on st_info
+begin
+DBMS_OUTPUT.PUT_LINE('This is row level trigger fired');
+end;
+/
+-------------------------------------------------------------
+sub1 should be in range of 0-100(conditional trigger)
+CREATE OR REPLACE TRIGGER c_tri_ins
+BEFORE INSERT ON st_info
+FOR EACH ROW
+BEGIN
+    IF :NEW.sub1 < 0 OR :NEW.sub1 > 100 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Marks not in range');
+    END IF;
+END;
+/
+insert into st_info(roll,name,sub1) VALUES (1, 'Aryan', -120); # it will generate error when the value is not in range otherwise it wont
+------------------------------------------------------------------------------------------------------------------------------------------
