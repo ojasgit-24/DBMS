@@ -1,0 +1,47 @@
+prac 6
+#hellow world pogramme using procedures
+Create procedure Hello_world
+As
+Begin
+DBMS_OUTPUT.PUT_line('Hello World');
+End;
+/
+#now to execute above program 
+EXEC Hello_world;
+execute Hello_world;
+
+#add 'welcome to sit' after 'Hello world'
+create or replace procedure Hello_world
+As
+Begin
+DBMS_OUTPUT.PUT_line('Hello World,Welcome to SIT');
+End;
+/
+
+#additio of two numbers
+CREATE OR REPLACE PROCEDURE addition
+AS
+    num1 NUMBER := 5;
+    num2 NUMBER := 10;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('RESULT: ' || (num1 + num2));
+END;
+/
+Swapping Two Numbers Without Using a Third Variable Procedure Creation
+CREATE OR REPLACE PROCEDURE SwapNumbers (
+    num1 IN OUT NUMBER,
+    num2 IN OUT NUMBER
+) AS
+BEGIN
+    num1 := num1 + num2;
+    num2 := num1 - num2;
+    num1 := num1 - num2;
+END;
+/
+VARIABLE X NUMBER;
+VARIABLE Y NUMBER;
+EXEC :X:=10;
+EXEC :Y:=20;
+EXEC SwapNumbers(:x,:y);
+PRINT x;
+PRINT y;
