@@ -1,0 +1,47 @@
+experiment 14
+-------------------------
+1.create table emp2 with attributes empno as integer type, name as string and category as integer type
+------------------------------------------------------------------------------------------------------------------
+CREATE TABLE emp2 (
+    empno INTEGER,
+    name VARCHAR(50),
+    category INTEGER
+);
+2.design trigger such that string values should be inserted or updated as uppercase only example string=upper(string)
+create or replace trigger trg_uppercase
+before update or insert on emp2
+for each row 
+begin
+:NEW.name:=upper(:NEW.name);
+end;
+/
+-----------------------------------------------------------------
+inserting some values in emp2
+insert into emp2 VALUES (101, 'aryan', 1);
+insert into emp2 VALUES (102, 'rahul', 2);
+insert into emp2 VALUES (103, 'Neha', 3);
+------------------------------------------------------------------------
+3.add new attribute salary with proper datatype to the above table
+alter table emp2 add salary NUMBER(7,2);
+----------------------------------------------------------------------------
+4.design a trigger which will be fired when a new record is inserted or update for the following conditions:
+a.salary should be more than 10000 for category 1.
+b.salary should be more than 20000 for category 2.
+c.salary should be more than 30000 for category 3.
+create or replace trigger trg_salary
+before insert or update on emp2
+for  each row
+begin
+if :new.category=1 and :new.salary<=10000 then
+RAISE_APPLICATION_ERROR(-20001,'Salary must be more than 10000 for category 1.');
+elsif :new.category=2 and :new.salary<=20000 then
+RAISE_APPLICATION_ERROR(-20002,'Salary must be more than 20000 for category 2.');
+elsif :new.category=3 and :new.salary<=30000 then
+RAISE_APPLICATION_ERROR(-20003,'Salary must be more than 30000 for category 3.');
+end if;
+end;
+/
+------------------------------------------------------------------------
+to check the conditions and giving errors or not
+insert into emp2 values (102, 'rahul', 2, 15000); #it will give error Salary must be more than 20000 for category2.
+-------------------------------------------------------
