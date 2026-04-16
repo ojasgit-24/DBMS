@@ -1,0 +1,66 @@
+
+EXPERIMENT11
+-------------
+|FUNCTIONS|
+----------------
+syntax
+-------
+create or replace f_name(arg1 datatype,arg2 datatype)
+return datatype #datatype maybe diff form input values
+as #use this if you have declared something
+declare variable
+begin
+calculation / computation #calculation is mathematical process and computation is like mathematical and comparision thing
+end;
+/
+-----------------------------------------------------------------------------------------------------------------------------------
+#calculate the square of any number
+create or replace function sq1(n IN NUMBER) return varchar2
+as
+    c NUMBER;
+BEGIN 
+    c := n * n;
+    RETURN ('square of ' || n || '= ' || c);
+END;
+/
+
+or
+
+create or replace function sq1(n IN NUMBER) return number
+as
+    c NUMBER;
+BEGIN 
+    c := n * n;
+    RETURN c;
+END;
+/
+#for output
+select sq1(number) form dual;
+------------------------------------------------------------------------------------------------------------------------------
+input m1 m2 m3 marks 
+calculate total and percentage and check weather pass or fail using function and procedures dont use exceptions
+
+CREATE OR REPLACE FUNCTION result_fn(m1 IN NUMBER, m2 IN NUMBER, m3 IN NUMBER)
+RETURN VARCHAR2
+AS
+    total NUMBER;
+    per NUMBER;
+BEGIN
+    total := m1 + m2 + m3;
+    per := total / 3;
+
+    IF per >= 40 THEN
+        RETURN 'Total = ' || total || ', Percentage = ' || per || ', PASS';
+    ELSE
+        RETURN 'Total = ' || total || ', Percentage = ' || per || ', FAIL';
+    END IF;
+END;
+/
+#for output
+SET SERVEROUTPUT ON;
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(result_fn(50, 40, 30));
+END;
+/
+---------------------------------------------------------------------------------------------------------------------------
